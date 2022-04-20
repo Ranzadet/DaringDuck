@@ -58,5 +58,9 @@ public class Tape{
         }
     }
 
+    public int numOnes(){
+        return Collections.frequency(tape, '1');
+    }
+
 
 }
