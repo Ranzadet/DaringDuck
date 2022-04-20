@@ -15,6 +15,9 @@ public class StateMachine{
             State curr = states.get(currentState);
             for(Transition t : curr.transitions){
                 if (t.input == input){
+                    if(t.result == 0){
+                        System.out.println("\n---Halting on Current state "+currentState+"---\n");
+                    }
                     currentState = t.result;
                     tape.writeTape(t.write, t.direction);
                     return;

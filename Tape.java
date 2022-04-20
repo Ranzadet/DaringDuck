@@ -4,7 +4,6 @@ import java.util.Collections;
 public class Tape{
 
     private static ArrayList<Character> tape;
-    public int oneCount;
     public int pointer;
 
     public Tape(ArrayList<Character> initial, int size){
@@ -39,8 +38,11 @@ public class Tape{
             ArrayList<Character> left = new ArrayList<Character>(Collections.nCopies(tape.size(), '0'));
             left.addAll(tape);
             tape = left;
+            index -= 1;
         }
         pointer = index;
+        System.out.println("Expanding, current ones: "+numOnes());
+        System.out.println("Pointer: "+pointer+"; Index of 1: "+tape.indexOf('1'));
         return index;
     }
 

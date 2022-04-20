@@ -12,6 +12,9 @@ public class TuringMachineRunner{
     }
 
     public static void main(String[] args) {
+        /* TODO: Make an automated, more optimal (less tedious) way of creating transitions. Set States, Transitions, 
+        and list size to 100 for a score of 3,333 */
+
         //Begin by constructing the list of states. The first state added should always be halt
         ArrayList<State> states = new ArrayList<>();
         states.add(new State("halt", new Transition[] {}, true));
@@ -48,10 +51,12 @@ public class TuringMachineRunner{
         Transition[] first = {zero,right,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z};
         State one = new State("goRight", first, false);
         states.add(one);
-        for(int inc = 2;inc<22;inc++){
+
+        int NUM_PRINTERS = 23;
+        for(int inc = 2;inc<2+NUM_PRINTERS;inc++){
             int next = inc+1;
             int direction = -1;
-            if(inc == 21){
+            if(inc == NUM_PRINTERS+1){
                 next = 1;
                 direction = 1;
             }
@@ -65,23 +70,30 @@ public class TuringMachineRunner{
 
 
         //Next, set the initial configuration of the characters on the tape
-        List<Character> initial = Collections.nCopies(1000, 'z');
+        List<Character> initial = Collections.nCopies(500, 'z');
 
         //Finally, specify the size you'd like the tape to start at
-        int size = 1000;
+        int size = 5000;
 
         //Only one call should ever be made to build, which will instantiate your turing machine
         build(states, initial, size);
 
+        long start = System.currentTimeMillis();
+        int count = 0;
         while (machine.currentState != 0){
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
+            if (count % 500000 == 0){
+                System.out.println("Seconds Elapsed at "+machine.tape.numOnes()+" 1's: "+(System.currentTimeMillis() - start)/1000);
+            }
             machine.nextState(machine.tape.readTape());
             //System.out.println(" -> "+machine.currentState);
+            count++;
         }
         int ones = machine.tape.numOnes();
 
         System.out.println("Number of 1's printed: " + ones);
+        
         //System.out.println(machine.tape);
         //System.out.println(machine.states.get(2).transitions[0].result);
     }
