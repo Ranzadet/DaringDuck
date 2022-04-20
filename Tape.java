@@ -1,19 +1,21 @@
 package DaringDuck;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Arrays;
 public class Tape{
 
     private static ArrayList<Character> tape;
     public int oneCount;
     public int pointer;
 
-    public Tape(char[] initial){
-        tape.ensureCapacity(100);
-        tape = new ArrayList<>(Collections.nCopies(100, '0'));
+    public Tape(ArrayList<Character> initial, int size){
+        tape.ensureCapacity(size + initial.size() + 1);
+        tape = new ArrayList<>(Collections.nCopies(size, '0'));
+        tape.addAll(size/2, initial);
+        pointer = size / 2;
     }
 
     //This method should be called when the pointer attempts to move off either side of the tape
+    /*
     public int Expand(){
         tape.ensureCapacity(tape.size()*3 + 1);
         ArrayList<Character> left = new ArrayList<Character>(Collections.nCopies(tape.size(), '0'));
@@ -23,8 +25,9 @@ public class Tape{
         tape = left;
         return index;
     }
+    */
 
-    //to be called for increased effeciency, when the side of expansion is given
+    //Expands the tape to the left if norm is false, and to the right if true
     public int Expand(boolean norm){
         int index = tape.size();
         tape.ensureCapacity(tape.size()*2 + 1);
@@ -36,15 +39,23 @@ public class Tape{
             left.addAll(tape);
             tape = left;
         }
+        pointer = index;
         return index;
     }
 
-    public Character readTape(int index){
-        return tape.get(index);
+    public Character readTape(){
+        return tape.get(pointer);
     }
 
-    public void writeTape(Character c, int index){
-        tape.set(index, c);
+    public void writeTape(Character c, int direction){
+        tape.set(pointer, c);
+        pointer += direction;
+        if (pointer < 0){
+            Expand(false);
+        }
+        else if (pointer >= tape.size()){
+            Expand(true);
+        }
     }
 
 
