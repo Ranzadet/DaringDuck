@@ -8,10 +8,11 @@ public class Tape{
     public int pointer;
 
     public Tape(ArrayList<Character> initial, int size){
-        tape.ensureCapacity(size + initial.size() + 1);
         tape = new ArrayList<>(Collections.nCopies(size, '0'));
+        tape.ensureCapacity(size + initial.size() + 1);
         tape.addAll(size/2, initial);
         pointer = size / 2;
+        System.out.println(tape.get(pointer));
     }
 
     //This method should be called when the pointer attempts to move off either side of the tape
@@ -60,6 +61,10 @@ public class Tape{
 
     public int numOnes(){
         return Collections.frequency(tape, '1');
+    }
+
+    public String toString(){
+        return tape.toString();
     }
 
 

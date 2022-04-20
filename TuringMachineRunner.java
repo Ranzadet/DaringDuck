@@ -18,33 +18,71 @@ public class TuringMachineRunner{
         Transition zero = new Transition(1, '0', 0, '1', -1);
         Transition right = new Transition(1, '1', 1, '1', 1);
         Transition a = new Transition(1, 'a', 2, '1', -1);
+        Transition b = new Transition(1, 'b', 2, 'a', -1);
+        Transition c = new Transition(1, 'c', 2, 'b', -1);
+        Transition d = new Transition(1, 'd', 2, 'c', -1);
+        Transition e = new Transition(1, 'e', 2, 'd', -1);
+        Transition f = new Transition(1, 'f', 2, 'e', -1);
+        Transition g = new Transition(1, 'g', 2, 'f', -1);
+        Transition h = new Transition(1, 'h', 2, 'g', -1);
+        Transition i = new Transition(1, 'i', 2, 'h', -1);
+        Transition j = new Transition(1, 'j', 2, 'i', -1);
+        Transition k = new Transition(1, 'k', 2, 'j', -1);
+        Transition l = new Transition(1, 'l', 2, 'k', -1);
+        Transition m = new Transition(1, 'm', 2, 'l', -1);
+        Transition n = new Transition(1, 'n', 2, 'm', -1);
+        Transition o = new Transition(1, 'o', 2, 'n', -1);
+        Transition p = new Transition(1, 'p', 2, 'o', -1);
+        Transition q = new Transition(1, 'q', 2, 'p', -1);
+        Transition r = new Transition(1, 'r', 2, 'q', -1);
+        Transition s = new Transition(1, 's', 2, 'r', -1);
+        Transition t = new Transition(1, 't', 2, 's', -1);
+        Transition u = new Transition(1, 'u', 2, 't', -1);
+        Transition v = new Transition(1, 'v', 2, 'u', -1);
+        Transition w = new Transition(1, 'w', 2, 'v', -1);
+        Transition x = new Transition(1, 'x', 2, 'w', -1);
+        Transition y = new Transition(1, 'y', 2, 'x', -1);
+        Transition z = new Transition(1, 'z', 2, 'y', -1);
 
-        Transition[] first = {zero,right,a};
+
+        Transition[] first = {zero,right,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z};
         State one = new State("goRight", first, false);
         states.add(one);
-        for(int i = 2;i<22;i++){
-            int next = i+1;
-            if(i == 21){
+        for(int inc = 2;inc<22;inc++){
+            int next = inc+1;
+            int direction = -1;
+            if(inc == 21){
                 next = 1;
+                direction = 1;
             }
-            states.add(new State("onePrinter"+i, new Transition[] {new Transition(i,'0',next,'1',-1)}, false));
+            if(inc == 2){
+                states.add(new State("onePrinter"+i, new Transition[] {new Transition(inc, '1', inc, '1', direction), new Transition(inc,'0',next,'1',direction)}, false));
+            }
+            else{
+                states.add(new State("onePrinter"+i, new Transition[] {new Transition(inc,'0',next,'1',direction)}, false));
+            }
         }
 
 
         //Next, set the initial configuration of the characters on the tape
-        List<Character> initial = Collections.nCopies(1000, '0');
+        List<Character> initial = Collections.nCopies(1000, 'z');
 
         //Finally, specify the size you'd like the tape to start at
-        int size = 10000;
+        int size = 1000;
 
         //Only one call should ever be made to build, which will instantiate your turing machine
         build(states, initial, size);
 
         while (machine.currentState != 0){
+            //System.out.print("Current: " + machine.currentState);
+            //System.out.print("  | with input "+machine.tape.readTape()+" | ");
             machine.nextState(machine.tape.readTape());
+            //System.out.println(" -> "+machine.currentState);
         }
         int ones = machine.tape.numOnes();
 
         System.out.println("Number of 1's printed: " + ones);
+        //System.out.println(machine.tape);
+        //System.out.println(machine.states.get(2).transitions[0].result);
     }
 }

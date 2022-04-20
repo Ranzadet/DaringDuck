@@ -15,7 +15,7 @@ public class StateMachine{
             State curr = states.get(currentState);
             for(Transition t : curr.transitions){
                 if (t.input == input){
-                    currentState = states.indexOf(t.result);
+                    currentState = t.result;
                     tape.writeTape(t.write, t.direction);
                     return;
                 }
