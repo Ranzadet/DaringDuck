@@ -24,7 +24,7 @@ public class TuringMachineRunner{
 
         //2 has an ascii value of 50. Do not go lower than this for alphabet1
         char alphabet1 = (char)50;
-        char alphabetLast = (char)149;
+        char alphabetLast = (char)127;
         Transition[] first = new Transition[alphabetLast-alphabet1+3];
         first[0] = zero;
         first[1] = right;
@@ -57,7 +57,7 @@ public class TuringMachineRunner{
         }
 
         //Next, set the initial configuration of the characters on the tape. This should be startSize many alphabetLast
-        int startSize = 100;
+        int startSize = 300;
         List<Character> initial = Collections.nCopies(startSize, alphabetLast);
 
         //Finally, specify the size you'd like the tape to start at
