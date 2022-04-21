@@ -11,10 +11,10 @@ public class Tape{
         tape.ensureCapacity(size + initial.size() + 1);
         tape.addAll(size/2, initial);
         pointer = size / 2;
-        System.out.println(tape.get(pointer));
+        //System.out.println(tape.get(pointer));
     }
 
-    //This method should be called when the pointer attempts to move off either side of the tape
+    //OLD
     /*
     public int Expand(){
         tape.ensureCapacity(tape.size()*3 + 1);
@@ -41,7 +41,7 @@ public class Tape{
             index -= 1;
         }
         pointer = index;
-        System.out.println("Expanding, current ones: "+numOnes());
+        System.out.println("Expanding in "+((norm) ? "right direction, " : "left direction, ")+"current ones: "+numOnes());
         System.out.println("Pointer: "+pointer+"; Index of 1: "+tape.indexOf('1'));
         return index;
     }
