@@ -74,13 +74,14 @@ public class TuringMachineRunner{
         states.add(new State("alphLast", new Transition[] {new Transition(statenum, '1', statenum, (char)(alphabetLast-1), -1), new Transition(statenum, '0', 1, '1', 1)}, false));
         */
 
-
+        
         //MACHINE 3: OPTIMIZED E PRINTER
         //NOTE: WITH THIS MACHINE, machine.currentState must start at 10
         //Define the number of f's, and "money printers" you'd like to have.
         //Alphabet size for this machine is 8 {0,1,a,b,c,d,e,f}
+        /*
         int alphabetSize = 8;
-        int startSize = 30;
+        int startSize = 2;
         int p = startSize;
         int i = startSize;
         Transition[] first = new Transition[4];
@@ -99,15 +100,15 @@ public class TuringMachineRunner{
         cr2[4] = new Transition(2, 'd', 6, 'c', -1);
         cr2[5] = new Transition(2, 'e', 7, '1', -1);
         cr2[6] = new Transition(2, '0', 0, '1', -1);
-        cr2[7] = new Transition(2, 'f', 9, '1', -1);
-        //cr2[7] = new Transition(2, 'f', 12+p, '1', -1);
+        //cr2[7] = new Transition(2, 'f', 9, '1', -1);  //Optimization 2
+        cr2[7] = new Transition(2, 'f', 12+p, '1', -1);  //Optimization 3
         State carryout2 = new State("CarryOut2", cr2, false);
         states.add(carryout2);
 
         State a = new State("a", new Transition[] {new Transition(3, '0', 2, '1', 1), new Transition(3, '1', 3, '1', -1)}, false);
-        State b = new State("a", new Transition[] {new Transition(4, '0', 2, '1', 1), new Transition(4, '1', 4, 'a', -1)}, false);
-        State c = new State("a", new Transition[] {new Transition(5, '0', 2, '1', 1), new Transition(5, '1', 5, 'b', -1)}, false);
-        State d = new State("a", new Transition[] {new Transition(6, '0', 2, '1', 1), new Transition(6, '1', 6, 'c', -1)}, false);
+        State b = new State("b", new Transition[] {new Transition(4, '0', 2, '1', 1), new Transition(4, '1', 4, 'a', -1)}, false);
+        State c = new State("c", new Transition[] {new Transition(5, '0', 2, '1', 1), new Transition(5, '1', 5, 'b', -1)}, false);
+        State d = new State("d", new Transition[] {new Transition(6, '0', 2, '1', 1), new Transition(6, '1', 6, 'c', -1)}, false);
         states.add(a);
         states.add(b);
         states.add(c);
@@ -119,9 +120,10 @@ public class TuringMachineRunner{
         State RES = new State("Reset", new Transition[] {new Transition(8, '0', 1, '0', 1)}, false);
         states.add(RES);
 
-        State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, 'f', -1)}, false);
+        //State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, 'f', -1)}, false);  //Optimization 2
+        State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, '0', 1), new Transition(9, 'f', 9, 'f', -1)}, false);  //Optimization 3
         states.add(f2);
-        //State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, '0', 1), new Transition(9, 'f', 9, 'f', -1)}, false);
+        
 
         State f1 = new State("f1", new Transition[] {new Transition(10, '0', 10, '0', 1), new Transition(10, 'f', 11, 'e', -1)}, false);
         states.add(f1);
@@ -139,7 +141,7 @@ public class TuringMachineRunner{
         State RES2 = new State("RES2", new Transition[] {new Transition(11+p, '0', 2, '1', 1)}, false);
         states.add(RES2);
 
-        /*
+        //  OPTIMIZATION 3
         State L3 = new State("L3", new Transition[] {new Transition(12+p, '1', 12+p, '1', -1), new Transition(12+p, 'f', 12+p, 'f', -1), new Transition(12+p, '0', 13+p, 'f', 1)}, false);
         states.add(L3);
 
@@ -148,7 +150,60 @@ public class TuringMachineRunner{
 
         State T1 = new State("Transition1", new Transition[] {new Transition(14+p, 'f', 12+p, '1', -1), new Transition(14+p, '1', 9, '1', -1)}, false);
         states.add(T1);
-        */
+        // */
+
+
+
+        ///MACHINE 4, OPTIMIZATION 0
+        ///*
+        //With this machine, machine.currentstate must start at 1
+
+        int magnitude = 2;
+
+        State start = new State("start", new Transition[] {new Transition(1, 'e', 2, 'd', -1)}, false);
+        states.add(start);
+
+        State res1 = new State("res1", new Transition[] {new Transition(2, '0', 3, '1', 1)}, false);
+        states.add(res1);
+
+
+        Transition[] first = new Transition[7];
+        first[0] = zero;
+        first[1] = new Transition(3, '1', 3, '1', 1);
+        first[2] = new Transition(3, 'd', 7, 'c', -1);
+        first[3] = new Transition(3, 'c', 6, 'b', -1);
+        first[4] = new Transition(3, 'b', 5, 'a', -1);
+        first[5] = new Transition(3, 'a', 4, '1', -1);
+        first[6] = new Transition(3, 'e', 8, 'a', -1);
+
+
+
+        State mainloop = new State("mainloop", first, false);
+        states.add(mainloop);
+
+
+
+
+        State a = new State("a", new Transition[] {new Transition(4, '0', 3, '1', 1), new Transition(4, '1', 4, '1', -1)}, false);
+        State b = new State("b", new Transition[] {new Transition(5, '0', 3, '1', 1), new Transition(5, '1', 5, 'a', -1)}, false);
+        State c = new State("c", new Transition[] {new Transition(6, '0', 3, '1', 1), new Transition(6, '1', 6, 'b', -1)}, false);
+        State d = new State("d", new Transition[] {new Transition(7, '0', 3, '1', 1), new Transition(7, '1', 7, 'c', -1)}, false);
+        states.add(a);
+        states.add(b);
+        states.add(c);
+        states.add(d);
+
+
+        State transformer = new State("transformer", new Transition[] {new Transition(8, '1', 8, 'a', -1), new Transition(8, '0', 9, '1', 1)}, false);
+        states.add(transformer);
+
+        State expand1 = new State("expand1", new Transition[] {new Transition(9, '1', 9, '1', 1), new Transition(9, 'a', 10, '1', -1), new Transition(9, '0', 0, '1', -1), new Transition(9, 'e', 8, 'a', -1)}, false);
+        states.add(expand1);
+
+        State expand2 = new State("expand2", new Transition[] {new Transition(10, '1', 10, '1', -1), new Transition(10, '0', 9, '1', 1)}, false);
+        states.add(expand2);
+        //*/
+
 
 
 
@@ -173,7 +228,7 @@ public class TuringMachineRunner{
 
 
         //Next, set the initial configuration of the characters on the tape. This should be startSize many alphabetLast
-        List<Character> initial =   Collections.nCopies(i, 'f');  //Arrays.asList('2', '5'); 
+        List<Character> initial =  Collections.nCopies(magnitude, 'e');   //FOR MACHINE 3: Collections.nCopies(i, 'f'); 
         //   
 
         //Finally, specify the size you'd like the tape to start at
@@ -183,10 +238,11 @@ public class TuringMachineRunner{
         build(states, initial, size);
         //System.out.println(machine.states.size());
 
-        long start = System.currentTimeMillis();
-        long lastTime = start;
+        long starttime = System.currentTimeMillis();
+        long lastTime = starttime;
         long count = 0;
         long nextMark = 50000000;
+        long numstates = 0;
         
         while (machine.currentState != 0){
             // if(machine.currentState == 13){
@@ -195,10 +251,10 @@ public class TuringMachineRunner{
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
-                if (System.currentTimeMillis() - lastTime > 600000){
-                    System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - start)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - start)/1000.0)%60) + ".");
+                if (System.currentTimeMillis() - lastTime > 300000){
+                    System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
-                    System.out.println("E's remaining: "+machine.tape.eCount(p) + " / " + p*i);
+                    //System.out.println("E's remaining: "+machine.tape.eCount(p) + " / " + p*i);
                     lastTime = System.currentTimeMillis();  
                 }
                 nextMark += 50000000;
@@ -209,6 +265,10 @@ public class TuringMachineRunner{
             //     s = "Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ";
             // }
             //
+            if(machine.tape.readTape() == 'e'){
+                System.out.println(numstates);
+            }
+            numstates++;
             
 
             //THIS RUNS THE LOOP. IT IS NOT PART OF THE SURROUNDING TESTS. DO NOT COMMENT OUT.
@@ -222,13 +282,14 @@ public class TuringMachineRunner{
         }
 
         int ones = machine.tape.numOnes();
-        double time = (System.currentTimeMillis() - start)/1000.0;
-        int score = machine.calculateScore(alphabetSize, i);
+        double time = (System.currentTimeMillis() - starttime)/1000.0;
+        //int score = machine.calculateScore(alphabetSize, i);
 
         System.out.println("Number of 1's printed: " + ones);
-        System.out.println("Score: "+score);
-        System.out.println("Finished in: "+ (int)(((System.currentTimeMillis() - start)/1000.0)/60.00) + "m : " + (int)(((System.currentTimeMillis() - start)/1000.0)%60) + "s.");
-        System.out.println("Score per second: "+(score/time));
+        //System.out.println("Score: "+score);
+        System.out.println("Finished in: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + "m : " + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + "s.");
+        //System.out.println("Score per second: "+(score/time));
+        //System.out.println("Average seconds per E: "+(time / (p*i)));
         
         //System.out.println(machine.states.get(1).transitions[25]);
         //System.out.println(machine.tape.readTape());

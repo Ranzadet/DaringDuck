@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class StateMachine{
 
     public ArrayList<State> states = new ArrayList<>();
-    public int currentState = 10;
+    public int currentState = 1;
     public Tape tape;
 
         public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size){
