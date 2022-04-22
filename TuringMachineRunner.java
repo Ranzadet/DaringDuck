@@ -172,7 +172,7 @@ public class TuringMachineRunner{
         long start = System.currentTimeMillis();
         long lastTime = start;
         long count = 0;
-        long nextMark = 5000000;
+        long nextMark = 50000000;
         
         while (machine.currentState != 0){
             // if(machine.currentState == 13){
@@ -181,13 +181,13 @@ public class TuringMachineRunner{
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
-                if (System.currentTimeMillis() - lastTime > 60000){
-                    System.out.println("\nTotal time elapsed: "+(System.currentTimeMillis() - start)/1000 + " seconds.");
+                if (System.currentTimeMillis() - lastTime > 600000){
+                    System.out.println("\nTotal time elapsed: "+((System.currentTimeMillis() - start)/1000.0)/60.00 + ":" + ((System.currentTimeMillis() - start)/1000.0)%60 + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
                     System.out.println("E's remaining: "+machine.tape.eCount() + " / " + p*i);
                     lastTime = System.currentTimeMillis();  
                 }
-                nextMark += 5000000;
+                nextMark += 50000000;
              }
             count++;
             // String s = "";
@@ -213,7 +213,7 @@ public class TuringMachineRunner{
 
         System.out.println("Number of 1's printed: " + ones);
         System.out.println("Score: "+score);
-        System.out.println("Total seconds elapsed: "+time);
+        System.out.println("Finished in: "+((System.currentTimeMillis() - start)/1000.0)/60.00 + ":" + ((System.currentTimeMillis() - start)/1000.0)%60 + ".");
         System.out.println("Score per second: "+(score/time));
         
         //System.out.println(machine.states.get(1).transitions[25]);
