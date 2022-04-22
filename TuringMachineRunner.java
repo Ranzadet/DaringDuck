@@ -80,7 +80,7 @@ public class TuringMachineRunner{
         //Define the number of f's, and "money printers" you'd like to have.
         //Alphabet size for this machine is 8 {0,1,a,b,c,d,e,f}
         int alphabetSize = 8;
-        int startSize = 2;
+        int startSize = 30;
         int p = startSize;
         int i = startSize;
         Transition[] first = new Transition[4];
@@ -100,6 +100,7 @@ public class TuringMachineRunner{
         cr2[5] = new Transition(2, 'e', 7, '1', -1);
         cr2[6] = new Transition(2, '0', 0, '1', -1);
         cr2[7] = new Transition(2, 'f', 9, '1', -1);
+        //cr2[7] = new Transition(2, 'f', 12+p, '1', -1);
         State carryout2 = new State("CarryOut2", cr2, false);
         states.add(carryout2);
 
@@ -120,6 +121,7 @@ public class TuringMachineRunner{
 
         State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, 'f', -1)}, false);
         states.add(f2);
+        //State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, '0', 1), new Transition(9, 'f', 9, 'f', -1)}, false);
 
         State f1 = new State("f1", new Transition[] {new Transition(10, '0', 10, '0', 1), new Transition(10, 'f', 11, 'e', -1)}, false);
         states.add(f1);
@@ -136,6 +138,18 @@ public class TuringMachineRunner{
 
         State RES2 = new State("RES2", new Transition[] {new Transition(11+p, '0', 2, '1', 1)}, false);
         states.add(RES2);
+
+        /*
+        State L3 = new State("L3", new Transition[] {new Transition(12+p, '1', 12+p, '1', -1), new Transition(12+p, 'f', 12+p, 'f', -1), new Transition(12+p, '0', 13+p, 'f', 1)}, false);
+        states.add(L3);
+
+        State CR3 = new State("CarryOut3", new Transition[] {new Transition(13+p, '1', 13+p, '1', 1), new Transition(13+p, 'f', 13+p, 'f', 1), new Transition(13+p, '0', 14+p, '0', -1)}, false);
+        states.add(CR3);
+
+        State T1 = new State("Transition1", new Transition[] {new Transition(14+p, 'f', 12+p, '1', -1), new Transition(14+p, '1', 9, '1', -1)}, false);
+        states.add(T1);
+        */
+
 
 
         /*
@@ -182,9 +196,9 @@ public class TuringMachineRunner{
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
                 if (System.currentTimeMillis() - lastTime > 600000){
-                    System.out.println("\nTotal time elapsed: "+((System.currentTimeMillis() - start)/1000.0)/60.00 + ":" + ((System.currentTimeMillis() - start)/1000.0)%60 + ".");
+                    System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - start)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - start)/1000.0)%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
-                    System.out.println("E's remaining: "+machine.tape.eCount() + " / " + p*i);
+                    System.out.println("E's remaining: "+machine.tape.eCount(p) + " / " + p*i);
                     lastTime = System.currentTimeMillis();  
                 }
                 nextMark += 50000000;
@@ -213,7 +227,7 @@ public class TuringMachineRunner{
 
         System.out.println("Number of 1's printed: " + ones);
         System.out.println("Score: "+score);
-        System.out.println("Finished in: "+((System.currentTimeMillis() - start)/1000.0)/60.00 + ":" + ((System.currentTimeMillis() - start)/1000.0)%60 + ".");
+        System.out.println("Finished in: "+ (int)(((System.currentTimeMillis() - start)/1000.0)/60.00) + "m : " + (int)(((System.currentTimeMillis() - start)/1000.0)%60) + "s.");
         System.out.println("Score per second: "+(score/time));
         
         //System.out.println(machine.states.get(1).transitions[25]);

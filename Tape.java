@@ -69,9 +69,10 @@ public class Tape{
         return tape.toString();
     }
 
-    public int eCount(){
-        int f = Collections.frequency(tape, 'e');
-        return f;
+    public int eCount(int p){
+        int f = Collections.frequency(tape, 'f');
+        int e = Collections.frequency(tape, 'e');
+        return e + f*p;
     }
 
 
