@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class StateMachine{
 
     public ArrayList<State> states = new ArrayList<>();
-    public int currentState = 1;
+    public int currentState = 10;
     public Tape tape;
 
         public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size){
@@ -25,6 +25,10 @@ public class StateMachine{
             }
             //if no transition is found, go to garbage state
             currentState = 0;
+        }
+
+        public int calculateScore(int a, int i){
+            return tape.numOnes() / (states.size() + a + i);
         }
 
 }

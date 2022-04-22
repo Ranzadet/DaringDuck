@@ -2,6 +2,7 @@ package DaringDuck;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 public class TuringMachineRunner{
 
     private static StateMachine machine;
@@ -21,10 +22,11 @@ public class TuringMachineRunner{
         Transition zero = new Transition(1, '0', 0, '1', -1);
         Transition right = new Transition(1, '1', 1, '1', 1);
 
-
+        /*
+        MACHINE 1: I FORGOT WHAT THIS WAS CALLED
         //2 has an ascii value of 50. Do not go lower than this for alphabet1
         char alphabet1 = (char)50;
-        char alphabetLast = (char)127;
+        char alphabetLast = (char)54;
         Transition[] first = new Transition[alphabetLast-alphabet1+3];
         first[0] = zero;
         first[1] = right;
@@ -35,12 +37,110 @@ public class TuringMachineRunner{
             num++;
         }
         first[alphabetLast-alphabet1+2] = new Transition(1, alphabetLast, 2, (char)(alphabetLast-1), -1);
+        State one = new State("goRight", first, false);
+        states.add(one);
+        */
+        
 
 
+
+        /*
+        MACHINE 2: TRUE BUSY BEAVER
+        Note: With this machine, machine.currentState must start at 1
+        WARNING: The followning algorithm is effectively infinite in length for any alphabet size greater than 5. 
+
+        char alphabet1 = (char)50;
+        char alphabetLast = (char)53;
+        Transition[] first = new Transition[alphabetLast-alphabet1+3];
+        first[0] = zero;
+        first[1] = right;
+        int num = 3;
+        first[2] = new Transition(1, alphabet1, 2, '1', -1);
+        for(char c = (char)(alphabet1 + 1); c<alphabetLast; c++){
+            first[num] = new Transition(1, c, num, (char)(c-1), -1);
+            num++;
+        }
+        first[alphabetLast-alphabet1+2] = new Transition(1, alphabetLast, num, (char)(alphabetLast-1), -1);
         State one = new State("goRight", first, false);
         states.add(one);
 
-        int NUM_PRINTERS = 100;
+        State two = new State("alphFirst", new Transition[] {new Transition(2, '1', 2, '1', -1), new Transition(2, '0', 1,'1', 1)}, false);
+        states.add(two);
+        int statenum = 3;
+        for (char ch = (char)(alphabet1 + 1); ch < alphabetLast; ch++){
+            states.add(new State("reduciton", new Transition[] {new Transition(statenum, '1', statenum, (char)(ch-1), -1), new Transition(statenum, '0', 1, '1', 1)}, false));
+            statenum++;
+        }
+        states.add(new State("alphLast", new Transition[] {new Transition(statenum, '1', statenum, (char)(alphabetLast-1), -1), new Transition(statenum, '0', 1, '1', 1)}, false));
+        */
+
+
+        //MACHINE 3: OPTIMIZED E PRINTER
+        //NOTE: WITH THIS MACHINE, machine.currentState must start at 10
+        //Define the number of f's, and "money printers" you'd like to have.
+        //Alphabet size for this machine is 8 {0,1,a,b,c,d,e,f}
+        int alphabetSize = 8;
+        int startSize = 2;
+        int p = startSize;
+        int i = startSize;
+        Transition[] first = new Transition[4];
+        first[0] = zero;
+        first[1] = right;
+        first[2] = new Transition(1, 'f', 9, '1', -1);
+        first[3] = new Transition(1, 'e', 11+p, 'd', -1);
+        State one = new State("CarryOut", first, false);
+        states.add(one);
+
+        Transition[] cr2 = new Transition[8];
+        cr2[0] = new Transition(2, '1', 2, '1', 1);
+        cr2[1] = new Transition(2, 'a', 3, '1', -1);
+        cr2[2] = new Transition(2, 'b', 4, 'a', -1);
+        cr2[3] = new Transition(2, 'c', 5, 'b', -1);
+        cr2[4] = new Transition(2, 'd', 6, 'c', -1);
+        cr2[5] = new Transition(2, 'e', 7, '1', -1);
+        cr2[6] = new Transition(2, '0', 0, '1', -1);
+        cr2[7] = new Transition(2, 'f', 9, '1', -1);
+        State carryout2 = new State("CarryOut2", cr2, false);
+        states.add(carryout2);
+
+        State a = new State("a", new Transition[] {new Transition(3, '0', 2, '1', 1), new Transition(3, '1', 3, '1', -1)}, false);
+        State b = new State("a", new Transition[] {new Transition(4, '0', 2, '1', 1), new Transition(4, '1', 4, 'a', -1)}, false);
+        State c = new State("a", new Transition[] {new Transition(5, '0', 2, '1', 1), new Transition(5, '1', 5, 'b', -1)}, false);
+        State d = new State("a", new Transition[] {new Transition(6, '0', 2, '1', 1), new Transition(6, '1', 6, 'c', -1)}, false);
+        states.add(a);
+        states.add(b);
+        states.add(c);
+        states.add(d);
+
+        State L2 = new State("L2", new Transition[] {new Transition(7, '1', 7, '1', -1), new Transition(7, '0', 8, 'e', -1)}, false);
+        states.add(L2);
+
+        State RES = new State("Reset", new Transition[] {new Transition(8, '0', 1, '0', 1)}, false);
+        states.add(RES);
+
+        State f2 = new State("f2", new Transition[] {new Transition(9, '1', 9, '1', -1), new Transition(9, '0', 10, 'f', -1)}, false);
+        states.add(f2);
+
+        State f1 = new State("f1", new Transition[] {new Transition(10, '0', 10, '0', 1), new Transition(10, 'f', 11, 'e', -1)}, false);
+        states.add(f1);
+
+        int E_PRINTERS = p-1;
+        for(int inc = 11;inc<11+E_PRINTERS;inc++){
+            int next = inc+1;
+            int direction = -1;
+            states.add(new State("EPrinter"+(inc-10), new Transition[] {new Transition(inc,'0',next,'e',direction)}, false));
+        }
+
+        State L1 = new State("L1", new Transition[] {new Transition(10+p, '0', 1, '0', 1)}, false);
+        states.add(L1);
+
+        State RES2 = new State("RES2", new Transition[] {new Transition(11+p, '0', 2, '1', 1)}, false);
+        states.add(RES2);
+
+
+        /*
+        PART OF MACHINE 1
+        int NUM_PRINTERS = 1;
         for(int inc = 2;inc<2+NUM_PRINTERS;inc++){
             int next = inc+1;
             int direction = -1;
@@ -55,35 +155,66 @@ public class TuringMachineRunner{
                 states.add(new State("onePrinter"+inc, new Transition[] {new Transition(inc,'0',next,'1',direction)}, false));
             }
         }
+        */
+
 
         //Next, set the initial configuration of the characters on the tape. This should be startSize many alphabetLast
-        int startSize = 300;
-        List<Character> initial = Collections.nCopies(startSize, alphabetLast);
+        List<Character> initial =   Collections.nCopies(i, 'f');  //Arrays.asList('2', '5'); 
+        //   
 
         //Finally, specify the size you'd like the tape to start at
-        int size = 5000;
+        int size = 100000;
 
         //Only one call should ever be made to build, which will instantiate your turing machine
         build(states, initial, size);
+        //System.out.println(machine.states.size());
 
         long start = System.currentTimeMillis();
-        // int count = 0;
+        long lastTime = start;
+        long count = 0;
+        long nextMark = 5000000;
         
         while (machine.currentState != 0){
+            // if(machine.currentState == 13){
+            //     System.out.println("On 14 with "+machine.tape.eCount()+" e's.");
+            // }
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
-            // if (count % 1000000 == 0){
-            //     System.out.println("Seconds Elapsed at "+machine.tape.numOnes()+" 1's: "+(System.currentTimeMillis() - start)/1000);
+             if (count > nextMark){
+                if (System.currentTimeMillis() - lastTime > 60000){
+                    System.out.println("\nTotal time elapsed: "+(System.currentTimeMillis() - start)/1000 + " seconds.");
+                    System.out.println("1's Printed: "+machine.tape.numOnes());
+                    System.out.println("E's remaining: "+machine.tape.eCount() + " / " + p*i);
+                    lastTime = System.currentTimeMillis();  
+                }
+                nextMark += 5000000;
+             }
+            count++;
+            // String s = "";
+            // if(lastTime > start){
+            //     s = "Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ";
             // }
-            // count++;
-            machine.nextState(machine.tape.readTape());
-            //System.out.println(" -> " + machine.currentState);
+            //
+            
+
+            //THIS RUNS THE LOOP. IT IS NOT PART OF THE SURROUNDING TESTS. DO NOT COMMENT OUT.
+            machine.nextState(machine.tape.readTape()); 
+
+            // if (machine.currentState == 0){
+            //     System.out.println(s+machine.currentState);
+            // }
+            //System.out.println(machine.currentState);
+            //System.out.println("1's Printed: "+machine.tape.numOnes());
         }
 
         int ones = machine.tape.numOnes();
+        double time = (System.currentTimeMillis() - start)/1000.0;
+        int score = machine.calculateScore(alphabetSize, i);
 
         System.out.println("Number of 1's printed: " + ones);
-        System.out.println("Total seconds elapsed: "+(System.currentTimeMillis() - start)/1000.0);
+        System.out.println("Score: "+score);
+        System.out.println("Total seconds elapsed: "+time);
+        System.out.println("Score per second: "+(score/time));
         
         //System.out.println(machine.states.get(1).transitions[25]);
         //System.out.println(machine.tape.readTape());
