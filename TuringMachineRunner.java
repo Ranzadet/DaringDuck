@@ -82,7 +82,7 @@ public class TuringMachineRunner{
         ///*
         int currState = 10;
         int alphabetSize = 8;
-        int startSize = 2;
+        int startSize = 1;
         int p = startSize;
         int i = startSize;
         List<Character> startingArray = Collections.nCopies(i, 'f');
@@ -277,6 +277,7 @@ public class TuringMachineRunner{
         long lastTime = starttime;
         long count = 0;
         long nextMark = 250000000;
+        long numstates = 0;
         
         while (machine.currentState != 0){
             // if(machine.currentState == 13){
@@ -309,6 +310,7 @@ public class TuringMachineRunner{
             // }
             //System.out.println(machine.currentState);
             //System.out.println("1's Printed: "+machine.tape.numOnes());
+            numstates++;
         }
 
         int ones = machine.tape.numOnes();
@@ -320,6 +322,7 @@ public class TuringMachineRunner{
         System.out.println("Finished in: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + "m : " + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + "s.");
         System.out.println("Score per second: "+(score/time));
         System.out.println("Average seconds per E: "+(time / (p*i)));
+        System.out.println("Number of states: "+numstates+";  States per second: "+(int)(numstates/time));
         
         //System.out.println(machine.states.get(1).transitions[25]);
         //System.out.println(machine.tape.readTape());
