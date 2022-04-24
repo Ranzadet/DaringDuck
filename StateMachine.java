@@ -3,11 +3,12 @@ import java.util.ArrayList;
 public class StateMachine{
 
     public ArrayList<State> states = new ArrayList<>();
-    public int currentState = 1;
+    public int currentState = 10;
     public Tape tape;
 
-        public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size){
+        public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size, int currentState){
             this.states = states;
+            this.currentState = currentState;
             tape = new Tape(initial,size);
         }
 
