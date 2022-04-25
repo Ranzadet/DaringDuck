@@ -207,7 +207,7 @@ public class TuringMachineRunner{
 
         State G = new State("G", tG, false);
         states.add(G);
-        State pG1 = new State("pG1", new Transition[] {new Transition(6, '0', 7, 'f', -1)}, false);
+        State pG1 = new State("pG1", new Transition[] {new Transition(6, '0', 7, 'f', -1), new Transition(6, 'g', 6, 'g', -1), new Transition(6, 'f', 6, 'f', -1)}, false);
         State pG2 = new State("pG2", new Transition[] {new Transition(7, '0', 8, 'f', -1)}, false);
         State pG3 = new State("pG3", new Transition[] {new Transition(8, '0', 9, 'f', -1)}, false);
         State pG4 = new State("pG4", new Transition[] {new Transition(9, '0', 5, 'f', 1)}, false);
@@ -220,19 +220,19 @@ public class TuringMachineRunner{
         states.add(GF);
 
         tF[0] = new Transition(11, 'f', 12, 'h', -1);
-        tF[0] = new Transition(11, 'h', 12, 'g', -1);
-        tF[0] = new Transition(11, 'g', 12, 'd', -1);
-        tF[0] = new Transition(11, 'd', 12, 'c', -1);
-        tF[0] = new Transition(11, 'c', 12, 'b', -1);
-        tF[0] = new Transition(11, 'b', 12, 'a', -1);
-        tF[0] = new Transition(11, 'a', 12, '1', -1);
-        tF[0] = new Transition(11, '1', 12, '0', -1);
-        tF[0] = new Transition(11, '0', 16, 'e', -1);
-        tF[0] = new Transition(11, 'e', 11, 'e', 1);
+        tF[1] = new Transition(11, 'h', 12, 'g', -1);
+        tF[2] = new Transition(11, 'g', 12, 'd', -1);
+        tF[3] = new Transition(11, 'd', 12, 'c', -1);
+        tF[4] = new Transition(11, 'c', 12, 'b', -1);
+        tF[5] = new Transition(11, 'b', 12, 'a', -1);
+        tF[6] = new Transition(11, 'a', 12, '1', -1);
+        tF[7] = new Transition(11, '1', 12, '0', -1);
+        tF[8] = new Transition(11, '0', 16, 'e', -1);
+        tF[9] = new Transition(11, 'e', 11, 'e', 1);
 
         State F = new State("F", tF, false);
         states.add(F);
-        State pF1 = new State("pF1", new Transition[] {new Transition(12, '0', 13, 'e', -1)}, false);
+        State pF1 = new State("pF1", new Transition[] {new Transition(12, '0', 13, 'e', -1), new Transition(12, 'f', 12, 'f', -1), new Transition(12, 'e', 12, 'e', -1)}, false);
         State pF2 = new State("pF2", new Transition[] {new Transition(13, '0', 14, 'e', -1)}, false);
         State pF3 = new State("pF3", new Transition[] {new Transition(14, '0', 15, 'e', -1)}, false);
         State pF4 = new State("pF4", new Transition[] {new Transition(15, '0', 11, 'e', 1)}, false);
@@ -274,7 +274,7 @@ public class TuringMachineRunner{
         states.add(c);
         states.add(d);
 
-        State L1 = new State("L1", new Transition[] {new Transition(24, '1', 24, '1', -1), new Transition(24, '0', 25, 'e', 1)}, false);
+        State L1 = new State("L1", new Transition[] {new Transition(24, '1', 24, '1', -1), new Transition(24, '0', 25, 'e', -1)}, false);
         states.add(L1);
 
         State RES2 = new State("RES2", new Transition[] {new Transition(25, '0', 17, '0', 1)}, false);
@@ -385,31 +385,36 @@ public class TuringMachineRunner{
         long starttime = System.currentTimeMillis();
         long lastTime = starttime;
         long count = 0;
-        long nextMark = 500000000;
+        long nextMark = 50000000l;
         long numstates = 0;
         
         while (machine.currentState != 0){
+            
+            int st = machine.currentState;
+            char chr = machine.tape.readTape();
             // if(machine.currentState == 13){
             //     System.out.println("On 14 with "+machine.tape.eCount()+" e's.");
             // }
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
-                if (System.currentTimeMillis() - lastTime > 600000){
+                if (System.currentTimeMillis() - lastTime > 6000){
                     System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
                     System.out.println("E's remaining: "+machine.tape.eCount(fValue) + " / " + numEs);
                     lastTime = System.currentTimeMillis();  
+                    System.out.println(machine.tape.fCount());
                 }
-                nextMark += 250000000;
+                nextMark += 50000000l;
              }
             count++;
-            // String s = "";
+            //String s = "Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ";
             // if(lastTime > start){
             //     s = "Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ";
             // }
-            //
             
+
+            //System.out.print("Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ");
 
             //THIS RUNS THE LOOP. IT IS NOT PART OF THE SURROUNDING TESTS. DO NOT COMMENT OUT.
             machine.nextState(machine.tape.readTape()); 
@@ -419,7 +424,13 @@ public class TuringMachineRunner{
             // }
             //System.out.println(machine.currentState);
             //System.out.println("1's Printed: "+machine.tape.numOnes());
+            // if(numstates > 153650){
+            //     System.out.println("Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ");
+            // }
             numstates++;
+            if(machine.currentState == 0){
+                System.out.println("state "+st+" on input "+chr);
+            }
         }
 
         int ones = machine.tape.numOnes();
