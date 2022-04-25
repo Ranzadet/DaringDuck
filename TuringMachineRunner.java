@@ -160,10 +160,11 @@ public class TuringMachineRunner{
         // /*
         int currState = 1;
         int alphabetSize = 10;
-        //int ePrinters = 4; 
+        int ePrinters = 4; 
         //int fPrinters =  4;
         //int gPrinters =  3;
         //int numH = 1;  
+        int fValue = ePrinters * 8;
         int numEs = 24576; //H * gprinters * 8 * f printers * h * e printers * 8
 
         int startSize = 0;
@@ -384,7 +385,7 @@ public class TuringMachineRunner{
         long starttime = System.currentTimeMillis();
         long lastTime = starttime;
         long count = 0;
-        long nextMark = 250000000;
+        long nextMark = 500000000;
         long numstates = 0;
         
         while (machine.currentState != 0){
@@ -394,10 +395,10 @@ public class TuringMachineRunner{
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
-                if (System.currentTimeMillis() - lastTime > 60000){
+                if (System.currentTimeMillis() - lastTime > 600000){
                     System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
-                    System.out.println("E's remaining: "+machine.tape.eFrequency() + " / " + numEs);
+                    System.out.println("E's remaining: "+machine.tape.eCount(fValue) + " / " + numEs);
                     lastTime = System.currentTimeMillis();  
                 }
                 nextMark += 250000000;
