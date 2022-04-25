@@ -75,5 +75,9 @@ public class Tape{
         return e + f*p;
     }
 
+    public int eFrequency(){
+        return Collections.frequency(tape, 'e');
+    }
+
 
 }
