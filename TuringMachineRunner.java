@@ -7,9 +7,8 @@ public class TuringMachineRunner{
 
     private static StateMachine machine;
 
-    private static void build(ArrayList<State> states, List<Character> initial, int size, int state, int pointTo){
-        ArrayList<Character> initArr = new ArrayList<>(initial);
-        machine = new StateMachine(states, initArr, size, state, pointTo);
+    private static void build(ArrayList<State> states, byte[] initial, int size, int state, int pointTo){
+        machine = new StateMachine(states, initial, size, state, pointTo);
     }
 
     public static void main(String[] args) {
@@ -19,8 +18,8 @@ public class TuringMachineRunner{
         //Begin by constructing the list of states. The first state added should always be halt
         ArrayList<State> states = new ArrayList<>();
         states.add(new State("halt", new Transition[] {}, true));
-        Transition zero = new Transition(1, '0', 0, '1', -1);
-        Transition right = new Transition(1, '1', 1, '1', 1);
+        // Transition zero = new Transition(1, '0', 0, '1', -1);
+        // Transition right = new Transition(1, '1', 1, '1', 1);
 
         /*
         MACHINE 1: I FORGOT WHAT THIS WAS CALLED
@@ -157,8 +156,9 @@ public class TuringMachineRunner{
 
         //MACHINE 3: Optimization 4 (increased printer effeciency)
         //With this machine, starting state is 1
-        // 0:0b 1:1b a:2b b:3b c:4b d:5b e:6b f:7b g:8b h:9b
+        // 0:0 1:1 a:2 b:3 c:4 d:5 e:6 f:7 g:8 h:9
         // /*
+        
         int currState = 1;
         int alphabetSize = 10;
         int ePrinters = 4; 
@@ -168,129 +168,129 @@ public class TuringMachineRunner{
         int fValue = ePrinters * 8;
         int numEs = 25344; //H * gprinters * 8 * f printers * h * e printers * 8
 
-        int startSize = 0;
-        List<Character> startingArray = Collections.nCopies(startSize, '0');
-
+        int startSize = 2000000000;
+        byte[] startingArray = new byte[startSize];
+ 
         Transition[] tH = new Transition[10];
         Transition[] tG = new Transition[10];
         Transition[] tF = new Transition[10];
-        
-        tH[0] = new Transition(1, '0', 2, 'h', -1);
-        tH[1] = new Transition(1, 'h', 2, 'f', -1);
-        tH[2] = new Transition(1, 'f', 2, 'e', -1);
-        tH[3] = new Transition(1, 'e', 2, 'd', -1);
-        tH[4] = new Transition(1, 'd', 2, 'c', -1);
-        tH[5] = new Transition(1, 'c', 2, 'b', -1);
-        tH[6] = new Transition(1, 'b', 2, 'a', -1);
-        tH[7] = new Transition(1, 'a', 2, '1', -1);
-        tH[8] = new Transition(1, '1', 5, '0', -1);
-        tH[9] = new Transition(1, 'g', 1, 'g', 1);
-
+       
+        tH[0] = new Transition(1, (byte)0, 2, (byte)9, -1);
+        tH[1] = new Transition(1, (byte)9, 2, (byte)7, -1);
+        tH[2] = new Transition(1, (byte)7, 2, (byte)6, -1);
+        tH[3] = new Transition(1, (byte)6, 2, (byte)5, -1);
+        tH[4] = new Transition(1, (byte)5, 2, (byte)4, -1);
+        tH[5] = new Transition(1, (byte)4, 2, (byte)3, -1);
+        tH[6] = new Transition(1, (byte)3, 2, (byte)2, -1);
+        tH[7] = new Transition(1, (byte)2, 2, (byte)1, -1);
+        tH[8] = new Transition(1, (byte)1, 5, (byte)0, -1);
+        tH[9] = new Transition(1, (byte)8, 1, (byte)8, 1);
+ 
         State H = new State("H", tH, false);
         states.add(H);
-        State pH1 = new State("pH1", new Transition[] {new Transition(2, 'g', 2, 'g', -1), new Transition(2, '0', 3, 'g', -1)}, false);
-        State pH2 = new State("pH2", new Transition[] {new Transition(3, '0', 4, 'g', -1)}, false);
-        State pH3 = new State("pH3", new Transition[] {new Transition(4, '0', 1, 'g', 1)}, false);
+        State pH1 = new State("pH1", new Transition[] {new Transition(2, (byte)8, 2, (byte)8, -1), new Transition(2, (byte)0, 3, (byte)8, -1)}, false);
+        State pH2 = new State("pH2", new Transition[] {new Transition(3, (byte)0, 4, (byte)8, -1)}, false);
+        State pH3 = new State("pH3", new Transition[] {new Transition(4, (byte)0, 1, (byte)8, 1)}, false);
         states.add(pH1);
         states.add(pH2);
         states.add(pH3);
-
-        tG[0] = new Transition(5, 'g', 6, 'h', -1);
-        tG[1] = new Transition(5, 'h', 6, 'e', -1);
-        tG[2] = new Transition(5, 'e', 6, 'd', -1);
-        tG[3] = new Transition(5, 'd', 6, 'c', -1);
-        tG[4] = new Transition(5, 'c', 6, 'b', -1);
-        tG[5] = new Transition(5, 'b', 6, 'a', -1);
-        tG[6] = new Transition(5, 'a', 6, '1', -1);
-        tG[7] = new Transition(5, '1', 6, 'f', -1);
-        tG[8] = new Transition(5, 'f', 5, 'f', 1);
-        tG[9] = new Transition(5, '0', 10, '0', -1);
-
+ 
+        tG[0] = new Transition(5, (byte)8, 6, (byte)9, -1);
+        tG[1] = new Transition(5, (byte)9, 6, (byte)6, -1);
+        tG[2] = new Transition(5, (byte)6, 6, (byte)5, -1);
+        tG[3] = new Transition(5, (byte)5, 6, (byte)4, -1);
+        tG[4] = new Transition(5, (byte)4, 6, (byte)3, -1);
+        tG[5] = new Transition(5, (byte)3, 6, (byte)2, -1);
+        tG[6] = new Transition(5, (byte)2, 6, (byte)1, -1);
+        tG[7] = new Transition(5, (byte)1, 6, (byte)7, -1);
+        tG[8] = new Transition(5, (byte)7, 5, (byte)7, 1);
+        tG[9] = new Transition(5, (byte)0, 10, (byte)0, -1);
+ 
         State G = new State("G", tG, false);
         states.add(G);
-        State pG1 = new State("pG1", new Transition[] {new Transition(6, '0', 7, 'f', -1), new Transition(6, 'g', 6, 'g', -1), new Transition(6, 'f', 6, 'f', -1)}, false);
-        State pG2 = new State("pG2", new Transition[] {new Transition(7, '0', 8, 'f', -1)}, false);
-        State pG3 = new State("pG3", new Transition[] {new Transition(8, '0', 9, 'f', -1)}, false);
-        State pG4 = new State("pG4", new Transition[] {new Transition(9, '0', 5, 'f', 1)}, false);
+        State pG1 = new State("pG1", new Transition[] {new Transition(6, (byte)0, 7, (byte)7, -1), new Transition(6, (byte)8, 6, (byte)8, -1), new Transition(6, (byte)7, 6, (byte)7, -1)}, false);
+        State pG2 = new State("pG2", new Transition[] {new Transition(7, (byte)0, 8, (byte)7, -1)}, false);
+        State pG3 = new State("pG3", new Transition[] {new Transition(8, (byte)0, 9, (byte)7, -1)}, false);
+        State pG4 = new State("pG4", new Transition[] {new Transition(9, (byte)0, 5, (byte)7, 1)}, false);
         states.add(pG1);
         states.add(pG2);
         states.add(pG3);
         states.add(pG4);
-
-        State GF = new State("GF", new Transition[] {new Transition(10, 'f', 10, 'f', -1), new Transition(10, '0', 11, '0', 1)}, false);
+ 
+        State GF = new State("GF", new Transition[] {new Transition(10, (byte)7, 10, (byte)7, -1), new Transition(10, (byte)0, 11, (byte)0, 1)}, false);
         states.add(GF);
-
-        tF[0] = new Transition(11, 'f', 12, 'h', -1);
-        tF[1] = new Transition(11, 'h', 12, 'g', -1);
-        tF[2] = new Transition(11, 'g', 12, 'd', -1);
-        tF[3] = new Transition(11, 'd', 12, 'c', -1);
-        tF[4] = new Transition(11, 'c', 12, 'b', -1);
-        tF[5] = new Transition(11, 'b', 12, 'a', -1);
-        tF[6] = new Transition(11, 'a', 12, '1', -1);
-        tF[7] = new Transition(11, '1', 12, '0', -1);
-        tF[8] = new Transition(11, '0', 16, 'e', -1);
-        tF[9] = new Transition(11, 'e', 11, 'e', 1);
-
+ 
+        tF[0] = new Transition(11, (byte)7, 12, (byte)9, -1);
+        tF[1] = new Transition(11, (byte)9, 12, (byte)8, -1);
+        tF[2] = new Transition(11, (byte)8, 12, (byte)5, -1);
+        tF[3] = new Transition(11, (byte)5, 12, (byte)4, -1);
+        tF[4] = new Transition(11, (byte)4, 12, (byte)3, -1);
+        tF[5] = new Transition(11, (byte)3, 12, (byte)2, -1);
+        tF[6] = new Transition(11, (byte)2, 12, (byte)1, -1);
+        tF[7] = new Transition(11, (byte)1, 12, (byte)0, -1);
+        tF[8] = new Transition(11, (byte)0, 16, (byte)6, -1);
+        tF[9] = new Transition(11, (byte)6, 11, (byte)6, 1);
+ 
         State F = new State("F", tF, false);
         states.add(F);
-        State pF1 = new State("pF1", new Transition[] {new Transition(12, '0', 13, 'e', -1), new Transition(12, 'f', 12, 'f', -1), new Transition(12, 'e', 12, 'e', -1)}, false);
-        State pF2 = new State("pF2", new Transition[] {new Transition(13, '0', 14, 'e', -1)}, false);
-        State pF3 = new State("pF3", new Transition[] {new Transition(14, '0', 15, 'e', -1)}, false);
-        State pF4 = new State("pF4", new Transition[] {new Transition(15, '0', 11, 'e', 1)}, false);
+        State pF1 = new State("pF1", new Transition[] {new Transition(12, (byte)0, 13, (byte)6, -1), new Transition(12, (byte)7, 12, (byte)7, -1), new Transition(12, (byte)6, 12, (byte)6, -1)}, false);
+        State pF2 = new State("pF2", new Transition[] {new Transition(13, (byte)0, 14, (byte)6, -1)}, false);
+        State pF3 = new State("pF3", new Transition[] {new Transition(14, (byte)0, 15, (byte)6, -1)}, false);
+        State pF4 = new State("pF4", new Transition[] {new Transition(15, (byte)0, 11, (byte)6, 1)}, false);
         states.add(pF1);
         states.add(pF2);
         states.add(pF3);
         states.add(pF4);
-
-        State eL = new State("eL", new Transition[] {new Transition(16, 'e', 16, 'e', -1), new Transition(16, '0', 17, '0', 1)}, false);
+ 
+        State eL = new State("eL", new Transition[] {new Transition(16, (byte)6, 16, (byte)6, -1), new Transition(16, (byte)0, 17, (byte)0, 1)}, false);
         states.add(eL);
-
-        State ed = new State("ed", new Transition[] {new Transition(17, 'e', 18, 'd', -1)}, false);
+ 
+        State ed = new State("ed", new Transition[] {new Transition(17, (byte)6, 18, (byte)5, -1)}, false);
         states.add(ed);
-
-        State RES = new State("RES", new Transition[] {new Transition(18, '0', 19, '1', 1)}, false);
+ 
+        State RES = new State("RES", new Transition[] {new Transition(18, (byte)0, 19, (byte)1, 1)}, false);
         states.add(RES);
-
-
-
+ 
+ 
+ 
         //NOT YET WRITTEN
         Transition[] cr = new Transition[8];
-        cr[0] = new Transition(19, '1', 19, '1', 1);
-        cr[1] = new Transition(19, 'a', 20, '1', -1);
-        cr[2] = new Transition(19, 'b', 21, 'a', -1);
-        cr[3] = new Transition(19, 'c', 22, 'b', -1);
-        cr[4] = new Transition(19, 'd', 23, 'c', -1);
-        cr[5] = new Transition(19, 'e', 24, '1', -1); //L1
-        cr[6] = new Transition(19, '0', 0, '1', -1);
-        cr[7] = new Transition(19, 'f', 26, '1', -1);  //f triangle left shift
+        cr[0] = new Transition(19, (byte)1, 19, (byte)1, 1);
+        cr[1] = new Transition(19, (byte)2, 20, (byte)1, -1);
+        cr[2] = new Transition(19, (byte)3, 21, (byte)2, -1);
+        cr[3] = new Transition(19, (byte)4, 22, (byte)3, -1);
+        cr[4] = new Transition(19, (byte)5, 23, (byte)4, -1);
+        cr[5] = new Transition(19, (byte)6, 24, (byte)1, -1); //L1
+        cr[6] = new Transition(19, (byte)0, 0, (byte)1, -1);
+        cr[7] = new Transition(19, (byte)7, 26, (byte)1, -1);  //f triangle left shift
         State carryout = new State("CarryOut", cr, false);
         states.add(carryout);
-
-        State a = new State("a", new Transition[] {new Transition(20, '0', 19, '1', 1), new Transition(20, '1', 20, '1', -1)}, false);
-        State b = new State("b", new Transition[] {new Transition(21, '0', 19, '1', 1), new Transition(21, '1', 21, 'a', -1)}, false);
-        State c = new State("c", new Transition[] {new Transition(22, '0', 19, '1', 1), new Transition(22, '1', 22, 'b', -1)}, false);
-        State d = new State("d", new Transition[] {new Transition(23, '0', 19, '1', 1), new Transition(23, '1', 23, 'c', -1)}, false);
+ 
+        State a = new State("a", new Transition[] {new Transition(20, (byte)0, 19, (byte)1, 1), new Transition(20, (byte)1, 20, (byte)1, -1)}, false);
+        State b = new State("b", new Transition[] {new Transition(21, (byte)0, 19, (byte)1, 1), new Transition(21, (byte)1, 21, (byte)2, -1)}, false);
+        State c = new State("c", new Transition[] {new Transition(22, (byte)0, 19, (byte)1, 1), new Transition(22, (byte)1, 22, (byte)3, -1)}, false);
+        State d = new State("d", new Transition[] {new Transition(23, (byte)0, 19, (byte)1, 1), new Transition(23, (byte)1, 23, (byte)4, -1)}, false);
         states.add(a);
         states.add(b);
         states.add(c);
         states.add(d);
-
-        State L1 = new State("L1", new Transition[] {new Transition(24, '1', 24, '1', -1), new Transition(24, '0', 25, 'e', -1)}, false);
+ 
+        State L1 = new State("L1", new Transition[] {new Transition(24, (byte)1, 24, (byte)1, -1), new Transition(24, (byte)0, 25, (byte)6, -1)}, false);
         states.add(L1);
-
-        State RES2 = new State("RES2", new Transition[] {new Transition(25, '0', 17, '0', 1)}, false);
+ 
+        State RES2 = new State("RES2", new Transition[] {new Transition(25, (byte)0, 17, (byte)0, 1)}, false);
         states.add(RES2);
-
-        State L2 = new State("L2", new Transition[] {new Transition(26, '1', 26, '1', -1), new Transition(26, '0', 27, 'f', 1), new Transition(26, 'f', 26, 'f', -1)}, false);
+ 
+        State L2 = new State("L2", new Transition[] {new Transition(26, (byte)1, 26, (byte)1, -1), new Transition(26, (byte)0, 27, (byte)7, 1), new Transition(26, (byte)7, 26, (byte)7, -1)}, false);
         states.add(L2);
-
-        State CR2 = new State("CR2", new Transition[] {new Transition(27, '1', 27, '1', 1), new Transition(27, 'f', 27, 'f', 1), new Transition(27, '0', 28, '0', -1)}, false);
+ 
+        State CR2 = new State("CR2", new Transition[] {new Transition(27, (byte)1, 27, (byte)1, 1), new Transition(27, (byte)7, 27, (byte)7, 1), new Transition(27, (byte)0, 28, (byte)0, -1)}, false);
         states.add(CR2);
-
-        State T1 = new State("T1", new Transition[] {new Transition(28, 'f', 26, '0', -1), new Transition(28, '1', 29, '1', -1)}, false);
+ 
+        State T1 = new State("T1", new Transition[] {new Transition(28, (byte)7, 26, (byte)0, -1), new Transition(28, (byte)1, 29, (byte)1, -1)}, false);
         states.add(T1);
-
-        State T2 = new State("T2", new Transition[] {new Transition(29, 'f', 29, 'f', -1), new Transition(29, '1', 29, '1', -1), new Transition(29, '0', 11, '0', 1)}, false);
+ 
+        State T2 = new State("T2", new Transition[] {new Transition(29, (byte)7, 29, (byte)7, -1), new Transition(29, (byte)1, 29, (byte)1, -1), new Transition(29, (byte)0, 11, (byte)0, 1)}, false);
         states.add(T2);
 
 
@@ -373,7 +373,7 @@ public class TuringMachineRunner{
 
 
         //Next, set the initial configuration of the characters on the tape. This should be startSize many alphabetLast
-        List<Character> initial =  startingArray;   //FOR MACHINE 4: Collections.nCopies(magnitude, 'e'); 
+        byte[] initial =  startingArray;   //FOR MACHINE 4: Collections.nCopies(magnitude, 'e'); 
         //byte[] initial = startingArray;
         //   
 
@@ -387,7 +387,7 @@ public class TuringMachineRunner{
         long starttime = System.currentTimeMillis();
         long lastTime = starttime;
         long count = 0;
-        long nextMark = 5000000000l;
+        long nextMark = 500000000l;
         long numstates = 0;
         
         while (machine.currentState != 0){
@@ -401,11 +401,12 @@ public class TuringMachineRunner{
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
                 if (System.currentTimeMillis() - lastTime > 600000){
-                    System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + ".");
+                    double timeRunning = ((System.currentTimeMillis() - starttime)/1000.0);
+                    System.out.println("\nTotal time elapsed: "+ (int)(timeRunning/60.00) + ":" + (int)(timeRunning%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
-                    System.out.println("E's remaining: "+machine.tape.eCount(fValue) + " / " + numEs);
+                    int e = machine.tape.eCount(fValue);
+                    System.out.println("E's remaining: "+e + " / " + numEs + "; Seconds per e: " + timeRunning/(numEs - e));
                     lastTime = System.currentTimeMillis();  
-                    System.out.println(machine.tape.fCount());
                 }
                 nextMark += 5000000000l;
              }

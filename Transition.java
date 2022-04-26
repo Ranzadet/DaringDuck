@@ -3,11 +3,11 @@ public class Transition{
     
     public int from;
     public int result;
-    public Character input;
+    public byte input;
     public int direction; //Although an int, direction will be either -1 (left) or 1 (right), to indicate movement along the tape 
-    public Character write;
+    public byte write;
 
-    public Transition(int from, Character input, int result, Character write, int direction){
+    public Transition(int from, byte input, int result, byte write, int direction){
         this.from = from;
         this.input = input;
         this.result = result;
