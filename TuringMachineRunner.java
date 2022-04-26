@@ -7,9 +7,9 @@ public class TuringMachineRunner{
 
     private static StateMachine machine;
 
-    private static void build(ArrayList<State> states, List<Character> initial, int size, int state){
+    private static void build(ArrayList<State> states, List<Character> initial, int size, int state, int pointTo){
         ArrayList<Character> initArr = new ArrayList<>(initial);
-        machine = new StateMachine(states, initArr, size, state);
+        machine = new StateMachine(states, initArr, size, state, pointTo);
     }
 
     public static void main(String[] args) {
@@ -157,6 +157,7 @@ public class TuringMachineRunner{
 
         //MACHINE 3: Optimization 4 (increased printer effeciency)
         //With this machine, starting state is 1
+        // 0:0b 1:1b a:2b b:3b c:4b d:5b e:6b f:7b g:8b h:9b
         // /*
         int currState = 1;
         int alphabetSize = 10;
@@ -165,7 +166,7 @@ public class TuringMachineRunner{
         //int gPrinters =  3;
         //int numH = 1;  
         int fValue = ePrinters * 8;
-        int numEs = 24576; //H * gprinters * 8 * f printers * h * e printers * 8
+        int numEs = 25344; //H * gprinters * 8 * f printers * h * e printers * 8
 
         int startSize = 0;
         List<Character> startingArray = Collections.nCopies(startSize, '0');
@@ -373,39 +374,40 @@ public class TuringMachineRunner{
 
         //Next, set the initial configuration of the characters on the tape. This should be startSize many alphabetLast
         List<Character> initial =  startingArray;   //FOR MACHINE 4: Collections.nCopies(magnitude, 'e'); 
+        //byte[] initial = startingArray;
         //   
 
         //Finally, specify the size you'd like the tape to start at
-        int size = 10000000;
+        int size = 2000000000;
 
         //Only one call should ever be made to build, which will instantiate your turing machine
-        build(states, initial, size, currState);
+        build(states, initial, size, currState, -1);
         //System.out.println(machine.states.size());
 
         long starttime = System.currentTimeMillis();
         long lastTime = starttime;
         long count = 0;
-        long nextMark = 50000000l;
+        long nextMark = 5000000000l;
         long numstates = 0;
         
         while (machine.currentState != 0){
             
-            int st = machine.currentState;
-            char chr = machine.tape.readTape();
+            // int st = machine.currentState;
+            // char chr = machine.tape.readTape();
             // if(machine.currentState == 13){
             //     System.out.println("On 14 with "+machine.tape.eCount()+" e's.");
             // }
             //System.out.print("Current: " + machine.currentState);
             //System.out.print("  | with input "+machine.tape.readTape()+" | ");
              if (count > nextMark){
-                if (System.currentTimeMillis() - lastTime > 6000){
+                if (System.currentTimeMillis() - lastTime > 600000){
                     System.out.println("\nTotal time elapsed: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + ":" + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + ".");
                     System.out.println("1's Printed: "+machine.tape.numOnes());
                     System.out.println("E's remaining: "+machine.tape.eCount(fValue) + " / " + numEs);
                     lastTime = System.currentTimeMillis();  
                     System.out.println(machine.tape.fCount());
                 }
-                nextMark += 50000000l;
+                nextMark += 5000000000l;
              }
             count++;
             //String s = "Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ";
@@ -428,9 +430,9 @@ public class TuringMachineRunner{
             //     System.out.println("Current State: "+ machine.currentState + " on input " + machine.tape.readTape() + " yields state ");
             // }
             numstates++;
-            if(machine.currentState == 0){
-                System.out.println("state "+st+" on input "+chr);
-            }
+            // if(machine.currentState == 0){
+            //     System.out.println("state "+st+" on input "+chr);
+            // }
         }
 
         int ones = machine.tape.numOnes();
@@ -439,7 +441,7 @@ public class TuringMachineRunner{
 
         System.out.println("Number of 1's printed: " + ones);
         System.out.println("Score: "+score);
-        System.out.println("Finished in: "+ (int)(((System.currentTimeMillis() - starttime)/1000.0)/60.00) + "m : " + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + "s.");
+        System.out.println("Finished in: "+ (int)((((System.currentTimeMillis() - starttime)/1000.0)/60.00)/60.00)+"h : "+(int)((((System.currentTimeMillis() - starttime)/1000.0)/60.00)%60) + "m : " + (int)(((System.currentTimeMillis() - starttime)/1000.0)%60) + "s.");
         System.out.println("Score per second: "+(score/time));
         System.out.println("Average seconds per E: "+(time / (numEs)));
         System.out.println("Number of states: "+numstates+";  States per second: "+(int)(numstates/time));

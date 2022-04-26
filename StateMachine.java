@@ -6,10 +6,10 @@ public class StateMachine{
     public int currentState = 10;
     public Tape tape;
 
-        public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size, int currentState){
+        public StateMachine(ArrayList<State> states, ArrayList<Character> initial, int size, int currentState, int pointTo){
             this.states = states;
             this.currentState = currentState;
-            tape = new Tape(initial,size);
+            tape = new Tape(initial,size, pointTo);
         }
 
         public void nextState(Character input){
