@@ -10,7 +10,7 @@ public class Tape{
     public Tape(byte[] initial, int size, int pointTo){
         //tape = new ArrayList<>(Collections.nCopies(size, '0')); //if size greater rhan 100 mil, split into multiple lists
         tape = initial;
-        pointer = (pointTo != -1) ? pointTo : initial.length/2 + initial.length/4;
+        pointer = (pointTo != -1) ? pointTo : initial.length/2 + initial.length/3 + initial.length/8;
         System.out.println(pointer);
         // tape.ensureCapacity(size + initial.size() + 1);
         // tape.addAll(size/2, initial);

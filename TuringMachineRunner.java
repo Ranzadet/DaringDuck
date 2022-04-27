@@ -168,8 +168,8 @@ public class TuringMachineRunner{
         int fValue = ePrinters * 8;
         int numEs = 25344; //H * gprinters * 8 * f printers * h * e printers * 8
 
-        int startSize = 2000000000;
-        byte[] startingArray = new byte[startSize];
+        int startSize = 0;
+        byte[] startingArray = new byte[2100000000];
  
         Transition[] tH = new Transition[10];
         Transition[] tG = new Transition[10];
@@ -387,7 +387,7 @@ public class TuringMachineRunner{
         long starttime = System.currentTimeMillis();
         long lastTime = starttime;
         long count = 0;
-        long nextMark = 500000000l;
+        long nextMark = 5000000000l;
         long numstates = 0;
         
         while (machine.currentState != 0){
